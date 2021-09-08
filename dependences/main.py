@@ -1,11 +1,15 @@
 import os
 import sqlite3
 
+#Functions that create tables
+dir_of_dir = "carpeta"
+dir = "{}\database.db".format(dir_of_dir)
+
 def create_table_student(): #this function try to create a table "students" if this table doesn't exist
-    if not os.path.exists("Library_Data_Base\dependences\carpeta"):
-        os.makedirs("Library_Data_Base\dependences\carpeta")
+    if not os.path.exists(dir_of_dir):
+        os.makedirs(dir_of_dir)
     
-    sql = sqlite3.connect("Library_Data_Base\dependences\carpeta\database.db")
+    sql = sqlite3.connect(dir)
     try:
         sql.execute('''CREATE TABLE "student" (
                     "dni_student" INTEGER NOT NULL UNIQUE,
@@ -21,10 +25,26 @@ def create_table_student(): #this function try to create a table "students" if t
                     PRIMARY KEY ("DNI_student")
                 );''')
     except:
-        print("carpeta creada")
+        pass
     sql.close()
 
-"""def create_table_inventory():
-    sql = sqlite3.connect("Library_Data_Base\dependences\database.db")"""
+def create_table_inventory():
+    if not os.path.exists(dir_of_dir):
+        os.makedirs(dir_of_dir)
+
+    sql = sqlite3.connect(dir)
+    try:
+        sql.execute('''create table "inventory"(
+                        "id_library_item" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                        "author" text,
+                        "editorial" text,
+                        "category" text,
+                        "stock" integer NOT NULL
+                    );
+        ''')
+    except:
+        pass
+    sql.close()
 
 create_table_student()
+create_table_inventory()
